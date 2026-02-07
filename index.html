@@ -3,106 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slow - Simple Deploy</title>
+    <title>Slow - Creative Deploy</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
-        input, textarea { background: #0a0a0a !important; border: 1px solid #222 !important; color: white !important; outline: none; }
-        .btn-slow { background: #fff; color: #000; font-weight: 700; transition: 0.2s; border-radius: 8px; }
-        .btn-slow:hover { background: #ccc; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
+        
+        body { 
+            background-color: #f0f2f5; 
+            color: #1a1a1a; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: radial-gradient(#d1d1d1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .neo-card {
+            background: white;
+            border: 3px solid #1a1a1a;
+            box-shadow: 8px 8px 0px #1a1a1a;
+            transition: all 0.2s ease;
+        }
+
+        .neo-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 12px 12px 0px #1a1a1a;
+        }
+
+        .btn-green {
+            background: #22c55e;
+            border: 3px solid #1a1a1a;
+            box-shadow: 4px 4px 0px #1a1a1a;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .btn-green:hover {
+            background: #4ade80;
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px #1a1a1a;
+        }
+
+        .btn-yellow {
+            background: #facc15;
+            border: 3px solid #1a1a1a;
+            box-shadow: 4px 4px 0px #1a1a1a;
+            font-weight: 800;
+        }
+
+        .bg-yellow-dot { background-color: #facc15; }
+        .bg-green-dot { background-color: #22c55e; }
+
+        input, textarea {
+            border: 2px solid #e5e7eb !important;
+            transition: all 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #1a1a1a !important;
+            ring: 0 !important;
+            outline: none;
+        }
+
+        .floating { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
     </style>
 </head>
-<body>
+<body class="min-h-screen overflow-x-hidden">
 
-    <div id="auth-section" class="flex items-center justify-center min-h-screen p-4">
-        <div class="glass p-8 rounded-3xl w-full max-w-sm shadow-2xl border-t-4 border-blue-500">
-            <h1 class="text-4xl font-black tracking-tighter mb-2 text-center text-blue-500">SLOW</h1>
-            <p class="text-gray-500 text-[10px] text-center mb-8 tracking-[0.2em] uppercase">Private Deployment</p>
-            <div class="space-y-3">
-                <input type="text" id="username" placeholder="Username" class="w-full p-3 rounded-xl text-sm">
-                <input type="password" id="password" placeholder="Password" class="w-full p-3 rounded-xl text-sm">
-                <button onclick="handleAuth()" class="w-full btn-slow py-3 mt-2">Masuk / Daftar</button>
+    <div id="auth-section" class="flex flex-col items-center justify-center min-h-screen p-6">
+        <div class="neo-card p-10 w-full max-w-md bg-white animate__animated animate__backInDown">
+            <div class="text-center mb-8">
+                <div class="inline-block bg-yellow-400 p-2 border-2 border-black mb-2 floating">
+                    <h1 class="text-5xl font-extrabold tracking-tighter">SLOW</h1>
+                </div>
+                <p class="font-bold text-gray-500 uppercase tracking-widest text-xs">Fast Code, Slow Living.</p>
+            </div>
+            
+            <div class="space-y-4">
+                <input type="text" id="username" placeholder="Siapa namamu?" class="w-full p-4 rounded-xl font-bold">
+                <input type="password" id="password" placeholder="Sandi rahasia" class="w-full p-4 rounded-xl font-bold">
+                <button onclick="handleAuth()" class="w-full btn-green py-4 text-xl">AYO MULAI! 🚀</button>
             </div>
         </div>
     </div>
 
-    <div id="deploy-section" class="hidden max-w-6xl mx-auto py-10 px-6">
-        <div class="flex justify-between items-end mb-10">
-            <div>
-                <h2 class="text-3xl font-bold italic text-blue-500">Slow/Dashboard</h2>
-                <p id="user-display" class="text-xs font-mono text-gray-400"></p>
+    <div id="deploy-section" class="hidden max-w-7xl mx-auto py-12 px-6 animate__animated animate__fadeIn">
+        <header class="flex justify-between items-center mb-12">
+            <div class="flex items-center gap-4">
+                <div class="bg-green-400 border-2 border-black p-2 font-black text-2xl shadow-[4px_4px_0px_black]">S</div>
+                <h2 class="text-3xl font-extrabold tracking-tight">Halo, <span id="user-display" class="text-green-600"></span>!</h2>
             </div>
-            <button onclick="location.reload()" class="text-xs opacity-50 hover:opacity-100">Logout</button>
-        </div>
+            <button onclick="location.reload()" class="btn-yellow px-6 py-2 rounded-lg">KELUAR</button>
+        </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="space-y-6">
-                <div class="glass p-6 rounded-2xl">
-                    <h3 class="text-sm font-bold mb-4 uppercase text-gray-400">Deploy Baru</h3>
-                    <input type="text" id="project-name" placeholder="slug-project" class="w-full p-3 rounded-xl mb-3 text-sm">
-                    <button onclick="handleDeploy()" class="w-full btn-slow py-3">Deploy</button>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div class="lg:col-span-4 space-y-8">
+                <div class="neo-card p-6 bg-white">
+                    <h3 class="font-black text-lg mb-4 flex items-center gap-2">
+                        <span class="w-4 h-4 bg-yellow-400 border-2 border-black rounded-full"></span> 
+                        BUAT BARU
+                    </h3>
+                    <input type="text" id="project-name" placeholder="nama-project-kamu" class="w-full p-4 rounded-xl mb-4 font-bold bg-gray-50">
+                    <button id="btn-deploy" onclick="handleDeploy()" class="w-full btn-green py-4">DEPLOY SEKARANG ✨</button>
                 </div>
 
-                <div class="glass p-6 rounded-2xl">
-                    <h3 class="text-sm font-bold mb-4 uppercase text-gray-400">Project Saya</h3>
-                    <div id="my-projects-list" class="space-y-2 text-sm overflow-y-auto max-h-60">
-                        <p class="text-gray-600 italic">Belum ada project...</p>
+                <div class="neo-card p-6 bg-white">
+                    <h3 class="font-black text-lg mb-4 flex items-center gap-2">
+                        <span class="w-4 h-4 bg-green-400 border-2 border-black rounded-full"></span>
+                        PROJECT SAYA
+                    </h3>
+                    <div id="my-projects-list" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                        </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-8">
+                <div class="neo-card bg-white h-full flex flex-col overflow-hidden">
+                    <div class="border-b-4 border-black p-4 bg-yellow-400 flex justify-between items-center">
+                        <div class="flex gap-2">
+                            <div class="w-4 h-4 bg-red-500 border-2 border-black rounded-full"></div>
+                            <div class="w-4 h-4 bg-gray-200 border-2 border-black rounded-full"></div>
+                            <div class="w-4 h-4 bg-gray-200 border-2 border-black rounded-full"></div>
+                        </div>
+                        <span id="edit-indicator" class="hidden font-black text-xs animate__animated animate__flash animate__infinite">MODE EDIT AKTIF!</span>
+                        <span class="font-black text-xs tracking-widest">CODE_EDITOR.HTML</span>
                     </div>
+                    <textarea id="project-code" spellcheck="false" class="w-full h-[600px] p-8 font-mono text-sm leading-relaxed bg-white border-none focus:ring-0" placeholder="Tulis kode HTML/CSS/JS di sini..."></textarea>
                 </div>
-            </div>
-
-            <div class="lg:col-span-2 glass rounded-2xl overflow-hidden flex flex-col">
-                <div class="bg-white/5 p-3 text-xs font-mono flex justify-between">
-                    <span>index.html</span>
-                    <span class="text-blue-400">Auto-save off</span>
-                </div>
-                <textarea id="project-code" rows="20" placeholder="Ketik HTML di sini..." class="w-full p-6 font-mono text-xs leading-relaxed resize-none bg-transparent"></textarea>
             </div>
         </div>
-    </div>
-
-    <div id="view-section" class="fixed inset-0 bg-white hidden z-[9999]">
-        <iframe id="output-frame" class="w-full h-full border-none"></iframe>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set, get, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getDatabase, ref, set, get, update, remove, runTransaction } 
+        from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // CONFIG (Sesuai milikmu)
         const firebaseConfig = {
             apiKey: "AIzaSyAa1YQqXXUn3ssriyyhl6mYHo47-rOcnmg",
-            authDomain: "tools-ab6a6.firebaseapp.com",
             databaseURL: "https://tools-ab6a6-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "tools-ab6a6",
-            appId: "1:1052074462643:web:b5cc8c3083889dfe514fc6"
+            projectId: "tools-ab6a6"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // --- AUTH ---
         window.handleAuth = async () => {
             const user = document.getElementById('username').value.trim().toLowerCase();
             const pass = document.getElementById('password').value;
-            if(!user || !pass) return alert("Lengkapi data!");
+            if(!user || !pass) return alert("Isi dulu dong!");
 
-            const userRef = ref(db, 'users/' + user);
-            const snapshot = await get(userRef);
-
-            if (snapshot.exists()) {
-                if(snapshot.val().password === pass) { loginSuccess(user); } 
-                else { alert("Password salah!"); }
-            } else {
-                await set(userRef, { password: pass });
-                loginSuccess(user);
-            }
+            const snap = await get(ref(db, 'users/' + user));
+            if (snap.exists() && snap.val().password !== pass) return alert("Password Salah!");
+            if (!snap.exists()) await set(ref(db, 'users/' + user), { password: pass });
+            
+            localStorage.setItem('slow_user', user);
+            showDashboard(user);
         };
 
-        function loginSuccess(user) {
-            localStorage.setItem('slow_user', user);
+        function showDashboard(user) {
             document.getElementById('auth-section').classList.add('hidden');
             document.getElementById('deploy-section').classList.remove('hidden');
-            document.getElementById('user-display').innerText = `@${user}`;
+            document.getElementById('user-display').innerText = user;
             loadMyProjects(user);
         }
 
@@ -114,35 +182,64 @@
             if (snap.exists()) {
                 Object.entries(snap.val()).forEach(([name, data]) => {
                     if(data.author === user) {
-                        const link = `${window.location.origin}/#${name}`;
                         listDiv.innerHTML += `
-                            <div class="p-2 border border-white/5 rounded-lg flex justify-between items-center">
-                                <a href="${link}" target="_blank" class="text-blue-400 truncate mr-2">${name}</a>
-                                <span class="text-[10px] opacity-30">Live</span>
-                            </div>`;
+                        <div class="p-4 border-2 border-black rounded-xl bg-gray-50 hover:bg-yellow-50 transition-colors animate__animated animate__fadeInUp">
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="font-black text-lg truncate pr-2">/${name}</span>
+                                <span class="bg-black text-white text-[10px] px-2 py-1 rounded font-bold">👁 ${data.views || 0}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="editProject('${name}')" class="flex-1 bg-white border-2 border-black text-[10px] font-black py-1 hover:bg-green-400 transition">EDIT</button>
+                                <button onclick="deleteProject('${name}')" class="flex-1 bg-white border-2 border-black text-[10px] font-black py-1 hover:bg-red-400 transition text-red-600">HAPUS</button>
+                                <a href="#${name}" target="_blank" class="flex-1 bg-black text-white text-[10px] font-black py-1 text-center rounded">BUKA</a>
+                            </div>
+                        </div>`;
                     }
                 });
             }
         }
 
-        window.handleDeploy = async () => {
-            const name = document.getElementById('project-name').value.trim().replace(/\s+/g, '-').toLowerCase();
-            const code = document.getElementById('project-code').value;
-            const user = localStorage.getItem('slow_user');
-
-            if(!name || !code) return alert("Nama & Kode wajib!");
-
-            await set(ref(db, 'deploys/' + name), { code, author: user });
-            alert("Deployed!");
-            loadMyProjects(user);
+        window.editProject = async (name) => {
+            const snap = await get(ref(db, 'deploys/' + name));
+            document.getElementById('project-name').value = name;
+            document.getElementById('project-name').disabled = true;
+            document.getElementById('project-code').value = snap.val().code;
+            document.getElementById('edit-indicator').classList.remove('hidden');
+            document.getElementById('btn-deploy').innerText = "UPDATE PROJECT! ✨";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
+        window.deleteProject = async (name) => {
+            if(confirm("Yakin mau hapus project ini dari muka bumi?")) {
+                await remove(ref(db, 'deploys/' + name));
+                loadMyProjects(localStorage.getItem('slow_user'));
+            }
+        };
+
+        window.handleDeploy = async () => {
+            const name = document.getElementById('project-name').value.trim().toLowerCase();
+            const code = document.getElementById('project-code').value;
+            const user = localStorage.getItem('slow_user');
+            
+            if(!name || !code) return alert("Nama dan Kode jangan kosong ya!");
+
+            await update(ref(db, 'deploys/' + name), { code, author: user });
+            alert("BOOM! Project berhasil di-deploy! 🚀");
+            location.reload();
+        };
+
+        // --- VIEW ENGINE ---
         async function checkRoute() {
             const hash = window.location.hash.substring(1);
-            if (hash) {
-                const snap = await get(ref(db, 'deploys/' + hash));
+            if (hash && hash !== "") {
+                const deployRef = ref(db, 'deploys/' + hash);
+                const snap = await get(deployRef);
                 if (snap.exists()) {
-                    document.body.innerHTML = `<iframe srcdoc="${snap.val().code.replace(/"/g, '&quot;')}" style="width:100vw;height:100vh;border:none;"></iframe>`;
+                    runTransaction(deployRef, (post) => {
+                        if (post) { post.views = (post.views || 0) + 1; }
+                        return post;
+                    });
+                    document.body.innerHTML = `<iframe srcdoc="${snap.val().code.replace(/"/g, '&quot;')}" style="width:100vw;height:100vh;border:none;background:white;"></iframe>`;
                 }
             }
         }
