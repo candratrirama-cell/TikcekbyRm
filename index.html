@@ -2,173 +2,173 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TERMINAL RVI: OTP_SYNC</title>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Vercel Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { box-sizing: border-box; }
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; height: 100vh; }
-        
-        /* UI TERMINAL */
-        .terminal-box { width: 100%; max-width: 400px; border: 1px solid #0f0; padding: 20px; background: rgba(0,10,0,0.9); box-shadow: 0 0 20px rgba(0,255,0,0.2); position: relative; }
-        .header { border-bottom: 2px solid #0f0; margin-bottom: 20px; text-align: center; padding-bottom: 10px; }
-        
-        /* INPUT & BUTTON */
-        .input-group { display: flex; flex-direction: column; gap: 15px; }
-        input { background: transparent; border: 1px solid #0f0; color: #0f0; padding: 12px; text-align: center; outline: none; font-size: 1.1em; }
-        button { background: #0f0; color: #000; border: none; padding: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        button:disabled { background: #050; color: #000; cursor: not-allowed; }
-
-        /* SCREENS */
-        #otp-screen, #main-terminal { display: none; }
-        
-        /* STATS UI */
-        .profile-card { text-align: center; display: none; }
-        .pfp { width: 110px; height: 110px; border: 1px solid #0f0; margin: 15px auto; clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); }
-        .stat-row { display: flex; justify-content: space-between; border: 1px solid rgba(0,255,0,0.3); padding: 8px; margin-bottom: 5px; font-size: 0.8em; }
-        
-        .loading-text { font-size: 0.7em; margin: 10px 0; display: none; color: #888; }
-        .scan { position: absolute; top:0; left:0; width:100%; height:2px; background:rgba(0,255,0,0.3); animation: scan 3s infinite linear; }
-        @keyframes scan { 0% {top:0} 100% {top:100%} }
+        body { background: #000; color: #fff; font-family: 'Inter', -apple-system, sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); }
+        input, textarea { background: #0a0a0a !important; border: 1px solid #222 !important; color: white !important; outline: none; transition: 0.3s; }
+        input:focus, textarea:focus { border-color: #0070f3 !important; box-shadow: 0 0 10px rgba(0, 112, 243, 0.2); }
+        .btn-deploy { background: #fff; color: #000; font-weight: 700; transition: 0.2s; }
+        .btn-deploy:hover { background: #eaeaea; transform: translateY(-1px); }
+        /* Hilangkan scrollbar tapi tetep bisa scroll */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
     </style>
 </head>
-<body>
+<body class="min-h-screen">
 
-<div class="terminal-box">
-    <div class="scan"></div>
-    <div class="header">
-        <h2 style="margin:0; font-size: 1em;">BKI_DATA_EXTRACTOR</h2>
-        <small style="font-size: 0.6em;">ENCRYPTED VIA RMAIL_OTP</small>
-    </div>
-
-    <div id="login-screen" class="input-group">
-        <p style="font-size: 0.7em; text-align: center;">ENTER RMAIL USERNAME TO RECEIVE CODE</p>
-        <input type="text" id="target-user" placeholder="USERNAME">
-        <button onclick="requestOTP()">GENERATE_OTP</button>
-        <p id="err-1" style="color:red; font-size:0.6em; text-align:center"></p>
-    </div>
-
-    <div id="otp-screen" class="input-group">
-        <p style="font-size: 0.7em; text-align: center; color: yellow;">[!] CHECK RMAIL APP FROM 'VerifyOTP'</p>
-        <input type="number" id="otp-input" placeholder="6-DIGIT CODE">
-        <button onclick="verifyOTP()">VERIFY_ACCESS</button>
-        <button onclick="location.reload()" style="background:transparent; color:#0f0; border:1px solid #0f0; font-size:0.6em; padding:5px">BACK</button>
-    </div>
-
-    <div id="main-terminal">
-        <div class="input-group">
-            <input type="text" id="tk-user" placeholder="TIKTOK_USERNAME">
-            <button onclick="extractTikTok()">EXTRACT_DATA</button>
-        </div>
-        <div id="loading" class="loading-text">CONNECTING...<br>BYPASSING SSL...</div>
-        <div id="result" class="profile-card">
-            <img id="pfp" class="pfp">
-            <h4 id="nick" style="margin:0"></h4>
-            <div id="stats" style="margin-top:15px"></div>
-            <button onclick="doLogout()" style="width:100%; margin-top:20px; font-size:0.7em; background:red; color:white">EXIT_SYSTEM</button>
+    <div id="auth-section" class="flex items-center justify-center min-h-screen p-4">
+        <div class="glass p-8 rounded-3xl w-full max-w-sm shadow-2xl">
+            <div class="mb-8 text-center">
+                <h1 class="text-3xl font-black tracking-tighter">VERCEL <span class="text-blue-500">CLONE</span></h1>
+                <p class="text-gray-500 text-xs mt-2 uppercase tracking-widest">Database Powered by Firebase</p>
+            </div>
+            <div class="space-y-4">
+                <input type="text" id="username" placeholder="Username" class="w-full p-3 rounded-xl text-sm">
+                <input type="password" id="password" placeholder="Password" class="w-full p-3 rounded-xl text-sm">
+                <button onclick="handleAuth()" class="w-full btn-deploy py-3 rounded-xl shadow-lg shadow-white/5">Masuk / Daftar</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-// -- BKI DATABASE SYNC --
-const config = { databaseURL: "https://rmail-68719-default-rtdb.asia-southeast1.firebasedatabase.app" };
-firebase.initializeApp(config);
-const db = firebase.database();
+    <div id="deploy-section" class="hidden max-w-5xl mx-auto py-12 px-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+            <div>
+                <h2 class="text-2xl font-bold tracking-tight">Dashboard Deployment</h2>
+                <p id="user-display" class="text-sm text-blue-400 font-mono mt-1"></p>
+            </div>
+            <button onclick="location.reload()" class="text-xs border border-gray-800 px-4 py-2 rounded-lg hover:bg-white/5 transition">Keluar / Refresh</button>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <div class="glass p-6 rounded-2xl">
+                    <label class="block text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-black">Link Name (Slug)</label>
+                    <input type="text" id="project-name" placeholder="nama-website" class="w-full p-3 rounded-xl mb-4 font-mono text-sm">
+                    
+                    <button onclick="handleDeploy()" class="w-full btn-deploy py-4 rounded-xl text-md">
+                        Deploy Sekarang
+                    </button>
+                </div>
 
-let currentUser = "";
+                <div id="result-link" class="hidden p-5 bg-blue-500/10 border border-blue-500/30 rounded-2xl animate-pulse">
+                    <p class="text-xs text-blue-300 mb-2 font-bold uppercase tracking-tight">Deploy Berhasil!</p>
+                    <a id="output-url" href="#" class="text-sm text-white underline break-all font-mono"></a>
+                </div>
+            </div>
 
-// Cek Sesi LocalStorage
-window.onload = () => {
-    if(localStorage.getItem("miner_auth") === "granted") {
-        showScreen('main-terminal');
-    }
-}
+            <div class="lg:col-span-2">
+                <div class="glass p-1 rounded-2xl">
+                    <div class="flex items-center gap-2 p-3 border-b border-white/5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        <span class="text-[10px] text-gray-500 ml-2 font-mono">index.html</span>
+                    </div>
+                    <textarea id="project-code" rows="18" placeholder="Masukkan kode HTML/CSS/JS di sini..." class="w-full p-4 rounded-b-2xl font-mono text-xs leading-relaxed"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 
-async function requestOTP() {
-    const user = document.getElementById('target-user').value.trim().toLowerCase();
-    if(!user) return;
-    
-    document.getElementById('err-1').innerText = "[SYS]: CHECKING DATABASE...";
-    
-    db.ref('users/' + user).once('value', async (s) => {
-        if(s.exists()) {
-            currentUser = user;
-            const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6 Digit
-            
-            // 1. Simpan OTP ke Database User
-            await db.ref('users/' + user + '/otp').set(otp);
-            
-            // 2. Kirim Pesan via VerifyOTP (Centang Biru Otomatis dari RAI logik)
-            const rid = ["verifyotp", user].sort().join("_");
-            await db.ref('chats/' + rid).push({
-                s: "VerifyOTP",
-                t: "KODE OTP PORTAL BKI ANDA: " + otp + ". Jangan sebarkan kode ini!",
-                time: Date.now()
+    <div id="view-section" class="fixed inset-0 bg-white hidden z-[9999]">
+        <iframe id="output-frame" class="w-full h-full border-none"></iframe>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // Konfigurasi Firebase tetap pakai milikmu
+        const firebaseConfig = {
+            apiKey: "AIzaSyAa1YQqXXUn3ssriyyhl6mYHo47-rOcnmg",
+            authDomain: "tools-ab6a6.firebaseapp.com",
+            databaseURL: "https://tools-ab6a6-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "tools-ab6a6",
+            storageBucket: "tools-ab6a6.firebasestorage.app",
+            messagingSenderId: "1052074462643",
+            appId: "1:1052074462643:web:b5cc8c3083889dfe514fc6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // --- AUTH LOGIC ---
+        window.handleAuth = async () => {
+            const user = document.getElementById('username').value.trim().toLowerCase();
+            const pass = document.getElementById('password').value;
+            if(!user || !pass) return alert("Isi Username dan Password!");
+
+            const userRef = ref(db, 'users/' + user);
+            const snapshot = await get(userRef);
+
+            if (snapshot.exists()) {
+                if(snapshot.val().password === pass) {
+                    showDashboard(user);
+                } else {
+                    alert("Password salah bro!");
+                }
+            } else {
+                await set(userRef, { password: pass });
+                alert("Akun baru didaftarkan!");
+                showDashboard(user);
+            }
+        };
+
+        function showDashboard(user) {
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('deploy-section').classList.remove('hidden');
+            document.getElementById('user-display').innerText = `active_user: ${user}`;
+            localStorage.setItem('session_user', user);
+        }
+
+        // --- DEPLOY LOGIC ---
+        window.handleDeploy = async () => {
+            const name = document.getElementById('project-name').value.trim().replace(/\s+/g, '-').toLowerCase();
+            const code = document.getElementById('project-code').value;
+
+            if(!name || !code) return alert("Nama dan Kode harus ada!");
+
+            await set(ref(db, 'deploys/' + name), { 
+                code: code,
+                author: localStorage.getItem('session_user') || 'anonymous'
             });
+
+            // Menyesuaikan URL secara otomatis sesuai domain aktif
+            const dynamicUrl = `${window.location.protocol}//${window.location.host}/#${name}`;
+            const resultBox = document.getElementById('result-link');
+            const linkTag = document.getElementById('output-url');
             
-            // Update List Chat User agar muncul di atas
-            await db.ref('mylists/' + user + '/verifyotp').update({ isG: false, last: Date.now() });
+            resultBox.classList.remove('hidden');
+            linkTag.href = dynamicUrl;
+            linkTag.innerText = dynamicUrl;
+        };
 
-            showScreen('otp-screen');
-        } else {
-            document.getElementById('err-1').innerText = "[ERR]: USER NOT FOUND";
+        // --- ROUTING SYSTEM ---
+        async function checkRoute() {
+            const hash = window.location.hash.substring(1); 
+            
+            if (hash && hash !== "" && !hash.includes('access_token')) {
+                const snapshot = await get(ref(db, 'deploys/' + hash));
+                
+                if (snapshot.exists()) {
+                    // Sembunyikan semua UI dashboard
+                    document.getElementById('auth-section').style.display = 'none';
+                    document.getElementById('deploy-section').style.display = 'none';
+                    document.getElementById('view-section').classList.remove('hidden');
+                    
+                    const iframe = document.getElementById('output-frame');
+                    // Menggunakan blob agar script di dalam kode user bisa jalan sempurna
+                    const blob = new Blob([snapshot.val().code], { type: 'text/html' });
+                    iframe.src = URL.createObjectURL(blob);
+                }
+            }
         }
-    });
-}
 
-function verifyOTP() {
-    const input = document.getElementById('otp-input').value;
-    db.ref('users/' + currentUser + '/otp').once('value', (s) => {
-        if(s.val() == input) {
-            localStorage.setItem("miner_auth", "granted");
-            localStorage.setItem("miner_user", currentUser);
-            showScreen('main-terminal');
-        } else {
-            alert("KODE OTP SALAH!");
-        }
-    });
-}
-
-async function extractTikTok() {
-    const target = document.getElementById('tk-user').value;
-    if(!target) return;
-    const loader = document.getElementById('loading');
-    const resDiv = document.getElementById('result');
-    
-    loader.style.display = 'block';
-    resDiv.style.display = 'none';
-
-    try {
-        const res = await fetch(`https://www.tikwm.com/api/user/info?unique_id=${target}`);
-        const json = await res.json();
-        if(json.code === 0) {
-            const d = json.data;
-            document.getElementById('pfp').src = d.user.avatarMedium;
-            document.getElementById('nick').innerText = d.user.nickname;
-            document.getElementById('stats').innerHTML = `
-                <div class="stat-row"><span>FOLLOWERS</span><span>${d.stats.followerCount.toLocaleString()}</span></div>
-                <div class="stat-row"><span>LIKES</span><span>${d.stats.heartCount.toLocaleString()}</span></div>
-                <div class="stat-row"><span>VIDEOS</span><span>${d.stats.videoCount}</span></div>
-            `;
-            loader.style.display = 'none';
-            resDiv.style.display = 'block';
-        } else { alert("TARGET NOT FOUND"); loader.style.display='none'; }
-    } catch (e) { alert("API ERROR"); loader.style.display='none'; }
-}
-
-function showScreen(id) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('otp-screen').style.display = 'none';
-    document.getElementById('main-terminal').style.display = 'none';
-    document.getElementById(id).style.display = 'block';
-}
-
-function doLogout() {
-    localStorage.clear();
-    location.reload();
-}
-</script>
+        window.addEventListener('hashchange', () => window.location.reload());
+        window.onload = checkRoute;
+    </script>
 </body>
 </html>
